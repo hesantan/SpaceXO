@@ -32,7 +32,7 @@ namespace Assets.Scripts
 
 		private void Update()
 		{
-			if (!Input.GetButton("Fire1") || !(Time.time > _nextFire))
+			if (!Input.GetButton("Fire1") && !Input.GetKeyDown(KeyCode.Space) || !(Time.time > _nextFire))
 			{
 				return;
 			}

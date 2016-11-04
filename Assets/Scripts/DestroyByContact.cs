@@ -31,6 +31,7 @@ namespace Assets.Scripts
 			switch (other.tag)
 			{
 				case "Boundary":
+				case "Enemy":
 					return;
 				case "Player":
 
@@ -39,12 +40,14 @@ namespace Assets.Scripts
 					_gameController.GameOver();
 
 					break;
-				default:
-					Instantiate(Explosion, transform.position, transform.rotation);
-					break;
 			}
 
-			_gameController.AddScore(ScoreValue);
+			if (Explosion != null)
+			{
+				Instantiate(Explosion, transform.position, transform.rotation);
+			}
+
+			//_gameController.AddScore(ScoreValue);
 
 			Destroy(gameObject);
 			Destroy(other.gameObject);
