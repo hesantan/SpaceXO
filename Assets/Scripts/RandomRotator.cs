@@ -10,7 +10,7 @@ namespace Assets.Scripts
 
 		private void Awake()
 		{
-			
+			_rigidbody = GetComponent<Rigidbody>();
 		}
 
 		private void Start()
