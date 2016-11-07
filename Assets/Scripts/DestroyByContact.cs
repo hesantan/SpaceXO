@@ -47,7 +47,7 @@ namespace Assets.Scripts
 				Instantiate(Explosion, transform.position, transform.rotation);
 			}
 
-			//_gameController.AddScore(ScoreValue);
+			_gameController.AddScore(ScoreValue);
 
 			Destroy(gameObject);
 			Destroy(other.gameObject);

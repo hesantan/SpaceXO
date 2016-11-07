@@ -20,14 +20,18 @@ namespace Assets.Scripts
 		public GameObject Shot;
 		public Transform ShotSpawn;
 
-		private Rigidbody _rigidbody;
 		private float _nextFire;
+
+		private Rigidbody _rigidbody;
 		private AudioSource _audioSource;
+		private Quaternion _calibrationQuaternion;
 
 		private void Start()
 		{
 			_rigidbody = GetComponent<Rigidbody>();
 			_audioSource = GetComponent<AudioSource>();
+
+			CalibrateAccellerometer();
 		}
 
 		private void Update()
@@ -59,5 +63,17 @@ namespace Assets.Scripts
 			_rigidbody.rotation = Quaternion.Euler(0f, 0f, _rigidbody.velocity.x * Tilt);
 		}
 
+		private void CalibrateAccellerometer()
+		{
+			var accelerationSnapshot = Input.acceleration;
+			var rotateQuaternion = Quaternion.FromToRotation(new Vector3(0f, 0f, -1f), accelerationSnapshot);
+			_calibrationQuaternion = Quaternion.Inverse(rotateQuaternion);
+		}
+
+		private Vector3 FixAcceleration(Vector3 acceleration)
+		{
+			var fixedAccelation = _calibrationQuaternion * acceleration;
+			return fixedAccelation;
+		}
 	}
 }
