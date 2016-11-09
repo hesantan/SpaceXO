@@ -19,6 +19,8 @@ namespace Assets.Scripts
 		public Boundary Boundary;
 		public GameObject Shot;
 		public Transform ShotSpawn;
+		public SimpleTouchPad TouchPad;
+		public SimpleTouchAreaButton AreaButton;
 
 		private float _nextFire;
 
@@ -36,22 +38,31 @@ namespace Assets.Scripts
 
 		private void Update()
 		{
-			if (!Input.GetButton("Fire1") && !Input.GetKeyDown(KeyCode.Space) || !(Time.time > _nextFire))
+			if (!AreaButton.CanFire() && !Input.GetKeyDown(KeyCode.Space) || !(Time.time > _nextFire))
 			{
 				return;
 			}
 
 			_nextFire = Time.time + FireRate;
-			Instantiate(Shot, ShotSpawn.position, ShotSpawn.rotation);
+			var shotClone = Instantiate(Shot, ShotSpawn.position, ShotSpawn.rotation) as GameObject;
+
+			if (shotClone != null)
+			{
+				shotClone.transform.parent = ShotSpawn;
+			}
+
 			_audioSource.Play();
 		}
 
 		private void FixedUpdate()
 		{
-			var moveHorizontal = Input.GetAxis("Horizontal");
-			var moveVertical = Input.GetAxis("Vertical");
+			//var moveHorizontal = Input.GetAxis("Horizontal");
+			//var moveVertical = Input.GetAxis("Vertical");
 
-			var movement = new Vector3(moveHorizontal, 0f, moveVertical);
+			//var movement = new Vector3(moveHorizontal, 0f, moveVertical);
+			var direction = TouchPad.GetDirection();
+			var movement = new Vector3(direction.x, 0f, direction.y);
+
 			_rigidbody.velocity = movement * Speed;
 
 			_rigidbody.position = new Vector3(

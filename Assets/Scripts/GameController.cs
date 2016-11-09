@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -9,9 +10,10 @@ namespace Assets.Scripts
 	{
 		public GameObject[] Hazards;
 		public Vector3 SpawnValues;
-		public GUIText ScoreText;
-		public GUIText RestartText;
-		public GUIText GameOverText;
+		//public Text RestartText;
+		public Text ScoreText;
+		public Text GameOverText;
+		public GameObject RestartButton;
 
 		public int HazardCount;
 
@@ -22,34 +24,35 @@ namespace Assets.Scripts
 		private int _score;
 
 		private bool _gameOver;
-		private bool _restart;
+		//private bool _restart;
 
 		// Use this for initialization
 		private void Start ()
 		{
 			_gameOver = false;
-			_restart = false;
+			//_restart = false;
 			_score = 0;
 
-			RestartText.text = "";
+			//RestartText.text = "";
 			GameOverText.text = "";
+			RestartButton.SetActive(false);
 
 			UpdateScore();
 			StartCoroutine(SpawnWaves());
 		}
 
-		private void Update()
-		{
-			if (!_restart)
-			{
-				return;
-			}
+		//private void Update()
+		//{
+		//	if (!_restart)
+		//	{
+		//		return;
+		//	}
 
-			if (Input.GetKeyDown(KeyCode.R))
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-			}
-		}
+		//	if (Input.GetKeyDown(KeyCode.R))
+		//	{
+		//		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		//	}
+		//}
 
 		private IEnumerator SpawnWaves()
 		{
@@ -76,8 +79,9 @@ namespace Assets.Scripts
 					continue;
 				}
 
-				RestartText.text = "Press 'R' for Restart";
-				_restart = true;
+				//RestartText.text = "Press 'R' for Restart";
+				RestartButton.SetActive(true);
+				//_restart = true;
 				break;
 			}
 		}
@@ -88,15 +92,20 @@ namespace Assets.Scripts
 			UpdateScore();
 		}
 
+		private void UpdateScore()
+		{
+			ScoreText.text = "Score: " + _score;
+		}
+
 		public void GameOver()
 		{
 			GameOverText.text = "Game Over!";
 			_gameOver = true;
 		}
 
-		private void UpdateScore()
+		public void RestartGame()
 		{
-			ScoreText.text = "Score: " + _score;
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
 }

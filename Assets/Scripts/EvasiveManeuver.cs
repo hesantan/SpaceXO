@@ -59,8 +59,6 @@ namespace Assets.Scripts
 			while (true)
 			{
 				_targetManeuver = _playerTransform != null ? _playerTransform.position.x : Random.Range(1, Dodge) * -Mathf.Sign(transform.position.x);
-				Debug.Log(_playerTransform == null);
-				Debug.Log("TM: " + _targetManeuver);
 
 				yield return new WaitForSeconds(Random.Range(ManeuverTime.x, ManeuverTime.y));
 
